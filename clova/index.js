@@ -92,6 +92,9 @@ class CEKRequest {
       if(query.rh) {
         cekResponse.appendSpeechText(`湿度は ${query.rh} パーセントです`)
       }
+      if(query.al) {
+        cekResponse.appendSpeechText(`環境光は ${query.al} ルクスです`)
+      }
       if(query.uv) {
         cekResponse.appendSpeechText(`紫外線は ${query.uv} です`)
       }
