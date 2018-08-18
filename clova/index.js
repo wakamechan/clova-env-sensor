@@ -90,7 +90,16 @@ class CEKRequest {
         cekResponse.appendSpeechText(`温度は ${query.tm} 度です`)
       }
       if(query.rh) {
-        cekResponse.appendSpeechText(`湿度は ${query.rh} 度です`)
+        cekResponse.appendSpeechText(`湿度は ${query.rh} パーセントです`)
+      }
+      if(query.uv) {
+        cekResponse.appendSpeechText(`紫外線は ${query.uv} です`)
+      }
+      if(query.pr) {
+        cekResponse.appendSpeechText(`気圧は ${query.pr * 10.0} ヘクトパスカルです`)
+      }
+      if(query.so) {
+        cekResponse.appendSpeechText(`騒音は ${query.so * 100} デシベルです`)
       }
       break
     }
