@@ -10,7 +10,7 @@
 <div class="chart-container" style="position: relative; height:40vh; width:80vw">
   <canvas id="myChart"></canvas>
 </div>
-<ul id="messages"></ul>
+<div id="messages"></div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var ctx = document.getElementById("myChart");
@@ -18,14 +18,14 @@
       type: 'line',
       data: {
           labels: [1,2,3,4,5,6,7,8,9,10],
-          datasets: [{
-              label: "温度",
-              data: Array(10).fill(0),
-              borderColor: [
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 2
-          }]
+          datasets: [
+            {label: "温度",data: Array(10).fill(0),borderColor: ['rgba(255, 159, 64, 1)'],borderWidth: 2},
+            {label: "湿度",data: Array(10).fill(0),borderColor: ['rgba(65, 105, 225, 1)'],borderWidth: 2},
+            {label: "環境光",data: Array(10).fill(0),borderColor: ['rgba(46, 139, 87, 1)'],borderWidth: 2},
+            {label: "紫外線",data: Array(10).fill(0),borderColor: ['rgba(128, 128, 128, 1)'],borderWidth: 2},
+            {label: "気圧",data: Array(10).fill(0),borderColor: ['rgba(255, 20, 147, 1)'],borderWidth: 2},
+            {label: "騒音",data: Array(10).fill(0),borderColor: ['rgba(255, 99, 71, 1)'],borderWidth: 2},
+          ]
       },
       options: {
           scales: {
@@ -40,14 +40,21 @@
   var socket = io();
   
   socket.on('data', function (data) {
-    var li = document.createElement('li');
-    li.textContent = data;
-    messages.appendChild(li);
+    messages.textContent = data;
     var d = JSON.parse(data);
-    myChart.data.datasets.forEach((dataset) => {
+    function f(i, n) {
+      if(myChart.data.datasets[i]) {
+        let dataset = myChart.data.datasets[i];
         dataset.data.shift();
-        dataset.data.push(Number(d.tm));
-    });
+        dataset.data.push(Number(n));
+      }
+    }
+    f(0, d.tm);
+    f(1, d.rh);
+    f(2, d.al);
+    f(3, d.uv);
+    f(4, d.pr);
+    f(5, d.so);
     myChart.update();
   });
 
