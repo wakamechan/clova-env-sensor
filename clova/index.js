@@ -102,7 +102,7 @@ class CEKRequest {
         cekResponse.appendSpeechText(`気圧は ${query.pr * 10.0} ヘクトパスカルです`)
       }
       if(query.so) {
-        cekResponse.appendSpeechText(`騒音は ${query.so * 100} デシベルです`)
+        cekResponse.appendSpeechText(`騒音は ${query.so} デシベルです`)
       }
       break
     }
