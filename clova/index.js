@@ -2,6 +2,21 @@ const uuid = require('uuid').v4
 const _ = require('lodash')
 const { DOMAIN, ExtensionId } = require('../config')
 var verifier = require('../util/verifier.js')
+var fs = require('fs');
+
+//ファイル読み込み関数
+function readFile(path) {
+  fs.readFile(path, 'utf8', function (err, data) {
+
+    //エラーの場合はエラーを投げてくれる
+    if (err) {
+        throw err;
+    }
+    
+    //ここに処理
+    console.log(data);
+  });
+}
 
 class Directive {
   constructor({namespace, name, payload}) {
@@ -63,7 +78,7 @@ class CEKRequest {
 
   launchRequest(cekResponse) {
     console.log('launchRequest')
-    cekResponse.setSimpleSpeechText('いくつのサイコロを投げますか?')
+    cekResponse.setSimpleSpeechText('環境情報をお答えします')
     cekResponse.setMultiturn({
       intent: 'ThrowDiceIntent',
     })
@@ -78,15 +93,14 @@ class CEKRequest {
     switch (intent) {
     case 'ThrowDiceIntent':
     default:
-      let diceCount = 1
-      cekResponse.appendSpeechText(`サイコロを ${diceCount}個 投げます。`)
-      cekResponse.appendSpeechText({
-        lang: 'ja',
-        type: 'URL',
-        value: `${DOMAIN}/rolling_dice_sound.mp3`,
-      })
-      const throwResult = throwDice(diceCount)
-      cekResponse.appendSpeechText(resultText(throwResult))
+      let json = readFile("envData.json");
+      let query = JSON.parse(json);
+      if(query.tm) {
+        cekResponse.appendSpeechText(`温度は ${query.tm} 度です`)
+      }
+      if(query.rh) {
+        cekResponse.appendSpeechText(`湿度は ${query.rh} 度です`)
+      }
       break
     }
 
@@ -97,7 +111,7 @@ class CEKRequest {
 
   sessionEndedRequest(cekResponse) {
     console.log('sessionEndedRequest')
-    cekResponse.setSimpleSpeechText('サイコロを終了します。')
+    cekResponse.setSimpleSpeechText('環境情報のお知らせを終了します。')
     cekResponse.clearMultiturn()
   }
 }
@@ -159,7 +173,7 @@ const clovaReq = function (httpReq, httpRes, next) {
   cekResponse = new CEKResponse()
   cekRequest = new CEKRequest(httpReq)
   try{
-    verifier(signature, ExtensionId, JSON.stringify(httpReq.body))
+    //verifier(signature, ExtensionId, JSON.stringify(httpReq.body))
   }catch(e){
     return httpRes.status(400).send(e.message)
   }
