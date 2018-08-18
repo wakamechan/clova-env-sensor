@@ -40,7 +40,7 @@
   var socket = io();
   
   socket.on('data', function (data) {
-    messages.textContent = data;
+    console.log(data);
     var d = JSON.parse(data);
     function f(i, n) {
       if(myChart.data.datasets[i]) {
