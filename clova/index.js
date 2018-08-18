@@ -20,34 +20,6 @@ class Directive {
   }
 }
 
-function resultText({midText, sum, diceCount}) {
-  if (diceCount == 1) {
-    return `結果は ${sum} です。`
-  } else if (diceCount < 4) {
-    return `結果は ${midText} で、合計 ${sum} です。`
-  } else {
-    return `${diceCount}個のサイコロの合計は ${sum} です。`
-  }
-}
-
-function throwDice(diceCount) {
-  const results = []
-  let midText = ''
-  let resultText = ''
-  let sum = 0
-  console.log(`throw ${diceCount} times`)
-  for (let i = 0; i < diceCount; i++) {
-    const rand = Math.floor(Math.random() * 6) + 1
-    console.log(`${i + 1} time: ${rand}`)
-    results.push(rand)
-    sum += rand
-    midText += `${rand}, `
-  }
-
-  midText = midText.replace(/, $/, '')
-  return {midText, sum, diceCount}
-}
-
 class CEKRequest {
   constructor (httpReq) {
     this.request = httpReq.body.request
