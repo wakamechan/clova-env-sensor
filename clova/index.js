@@ -14,7 +14,7 @@ function readFile(path) {
     }
     
     //ここに処理
-    console.log(data);
+    return data;
   });
 }
 
