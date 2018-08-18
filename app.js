@@ -7,6 +7,13 @@ const {SERVER_PORT} = require('./config.js');
 const routes = require('./routes');
 
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+global.io = io;
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
 
 app.use(bodyParser.json())
 app.use(morgan('common'));
@@ -21,6 +28,6 @@ app.use((req, res, next) => {
   next(err);
 });
 
-app.listen(SERVER_PORT, () => {
+server.listen(SERVER_PORT, () => {
   console.log(`Server is running on ${SERVER_PORT} port`);
 });

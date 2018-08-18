@@ -12,6 +12,7 @@ function writeFile(path, data) {
 const sensorReq = function (httpReq, httpRes, next) {
   let json = JSON.stringify(httpReq.query);
   writeFile("envData.json", json);
+  global.io.emit("data", json);
   httpRes.send("ok");
 };
 

@@ -6,4 +6,9 @@ const router = express.Router();
 router.post(`/clova`, clova);
 router.get(`/sensor`, sensor);
 
+router.get('/chart', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+  
+
 module.exports = router;
