@@ -91,7 +91,7 @@ class CEKRequest {
     const slots = this.request.intent.slots
 
     switch (intent) {
-    case 'ThrowDiceIntent':
+    case 'getEnvSensorData':
     default:
       let json = readFile("envData.json");
       let query = JSON.parse(json);
