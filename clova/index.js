@@ -6,16 +6,7 @@ var fs = require('fs');
 
 //ファイル読み込み関数
 function readFile(path) {
-  fs.readFile(path, 'utf8', function (err, data) {
-
-    //エラーの場合はエラーを投げてくれる
-    if (err) {
-        throw err;
-    }
-    
-    //ここに処理
-    return data;
-  });
+  return fs.readFileSync(path, 'utf8');
 }
 
 class Directive {
